@@ -1,0 +1,39 @@
+# 供 C:\isaacsim\python.bat -m pip install -r 使用的草稿清单。
+# 本文件没有在 Windows 上安装过，也没有在 Isaac Sim 6.2 的 python.bat 里验证过。
+#
+# 不要 pip 安装 isaacsim。工作站版已经在 C:\isaacsim。
+# pixi 会另外装一份 Linux 版 isaacsim==6.2.0.0，那条路径不能用在这台 Windows 上。
+#
+# 不要用 pip 把 numpy / scipy / torch / warp / opencv 换成别的版本，
+# 除非下面的 --check-imports 证明工作站 Python 里缺少对应模块。
+# 迁移文档记录的 Isaac Sim 6.2.0.0 wheel 锁定包括：
+#   numpy==2.3.1
+#   scipy==1.17.0
+#   warp 1.17.0（omni.warp.core / warp-lang==1.17.0）
+#   opencv-python-headless-noffmpeg==4.14.0.94rc3
+#   llvmlite==0.46.0，因此 numba 只能是 0.63.x
+# 同时安装 opencv-python 和 headless 版会抢同一个 cv2 包。
+
+# --- Lunalab / Lunaryard 视觉草稿会 import 的、工作站里通常没有的包 ---
+hydra-core
+omegaconf
+skyfield
+matplotlib
+numpy-quaternion
+
+# cv2、scipy、numpy 应先看工作站自带的版本。缺了再单独处理，不要写进这条默认安装。
+
+# --- 官方 pixi 有、但视觉草稿默认不 import ---
+# LargeScale 的 clipmap / 压缩 DEM 才需要。版本对齐 pixi.toml。
+# numba==0.63.*
+# zfpy
+# warp-lang==1.17.0
+
+# --- GDAL ---
+# src/ 的运行代码不 import osgeo。GDAL 只出现在 DEM 预处理脚本
+# （scripts/preprocess_dem.py、scripts/extract_dems.sh 的 gdalinfo）和 pixi 的 conda 依赖里。
+# Windows 上没有 pixi 的 linux-64/conda-forge 路径。
+# pip 安装 GDAL 经常缺少匹配的 libgdal，也可能再带进一份 numpy，把 2.3.1 换掉。
+# Lunalab / Lunaryard 视觉草稿不要为了 GDAL 先装它。
+# 以后如果要在 Windows 上自己把 GeoTIFF 转成 dem.npy，再用 OSGeo4W 或 conda，
+# 装完核对 numpy 仍是 2.3.1。不要把 SouthPole DEM 提交进 nvidia-learn。

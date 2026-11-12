@@ -1,0 +1,4 @@
+[submodule "omnilrs/upstream"]
+	path = omnilrs/upstream
+	url = https://github.com/OmniLRS/OmniLRS.git
+	branch = main
